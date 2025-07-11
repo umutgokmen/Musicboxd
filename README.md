@@ -105,22 +105,6 @@ Open your browser and navigate to `http://localhost:5000` to use the application
 
 ```
 
-## Repository Contents
-
-Include the following in your GitHub repository:
-
-- **Include**:
-  - `src/` directory (all application code, blueprints, templates, and static files)
-  - `README.md`
-  - `requirements.txt` (generate with `pip freeze > requirements.txt`)
-  - `.gitignore`
-  - `.env.example` (if you use environment variables for configuration)
-
-- **Exclude**:
-  - `venv/` virtual environment folder
-  - `__pycache__/` directories and `*.pyc` files
-  - `.env` files containing sensitive credentials
-
 musicboxd/
 ├── src/
 │   ├── app.py          # Application entry point
