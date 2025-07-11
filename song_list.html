@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Şarkı Listesi</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="top-right">
+    {% if session.get("user_id") %}
+      <a href="{{ url_for('auth.logout') }}" class="logout-btn">Çıkış Yap</a>
+    {% endif %}
+  </div>
+
+  {% if not session.get("user_id") %}
+    <a href="{{ url_for('auth.login') }}">Giriş Yap</a> |
+    <a href="{{ url_for('auth.register') }}">Kayıt Ol</a>
+  {% else %}
+    <span>Hoş geldin, {{ session.username }}!</span>
+  {% endif %}
+
+  {% if session.get("is_admin") %}
+    <a href="{{ url_for('admin.admin_panel') }}">Admin Paneli</a>
+  {% endif %}
+
+  <h2>Şarkı Listesi</h2>
+  <ul>
+    {% for song in songs %}
+      <li>
+        <img src="{{ song.cover_url }}" width="100">
+        <a href="{{ url_for('song.song_detail', song_id=song.id) }}">{{ song.title }}</a>
+        - {{ song.artist }} (Albüm: {{ song.album }})
+        <span class="star-rating">
+          {{ song.avg_rating|render_stars }}
+          {% if song.avg_rating %}
+            <span class="star-score">{{ '%.1f'|format(song.avg_rating) }}</span>
+          {% else %}
+            <span class="star-score">-</span>
+          {% endif %}
+        </span>
+        {% if song.song_url %}
+          <a href="{{ song.song_url }}" target="_blank" title="YouTube'da Dinle">
+            <img src="{{ url_for('static', filename='youtube.png') }}" alt="YouTube" width="16" style="vertical-align: middle;">
+          </a>
+        {% endif %}
+      </li>
+    {% else %}
+      <li>Hiç şarkı yok.</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

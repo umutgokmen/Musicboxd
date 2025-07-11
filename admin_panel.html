@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Paneli</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h2>Sanatçı Ekle</h2>
+  <form method="post">
+    <input type="text" name="artist_name" placeholder="Sanatçı Adı" required>
+    <input type="text" name="artist_photo" placeholder="Sanatçı Fotoğraf URL">
+    <input type="submit" value="Sanatçı Ekle">
+  </form>
+
+  <h2>Albüm Ekle</h2>
+  <form method="post">
+    <input type="text" name="album_name" placeholder="Albüm Adı" required>
+    <select name="album_artist" required>
+      <option value="">Sanatçı Seç</option>
+      {% for artist in artists %}
+        <option value="{{ artist.id }}">{{ artist.name }}</option>
+      {% endfor %}
+    </select>
+    <input type="text" name="album_cover" placeholder="Albüm Kapağı URL">
+    <input type="submit" value="Albüm Ekle">
+  </form>
+
+  <h2>Şarkı Ekle</h2>
+  <form method="post">
+    <input type="text" name="song_title" placeholder="Şarkı Adı" required>
+    <select name="song_album" required>
+      <option value="">Albüm Seç</option>
+      {% for album in albums %}
+        <option value="{{ album.id }}">{{ album.name }}</option>
+      {% endfor %}
+    </select>
+    <select name="song_artist" required>
+      <option value="">Sanatçı Seç</option>
+      {% for artist in artists %}
+        <option value="{{ artist.id }}">{{ artist.name }}</option>
+      {% endfor %}
+    </select>
+    <input type="text" name="song_url" placeholder="Şarkı URL (isteğe bağlı)">
+    <input type="submit" value="Şarkı Ekle">
+  </form>
+
+  <h2 class="centered-title">Mevcut Şarkılar</h2>
+  <table>
+    <tr>
+      <th>Şarkı Adı</th>
+      <th>Sanatçı</th>
+      <th>İşlemler</th>
+    </tr>
+    {% for song in songs %}
+      <tr>
+        <td>{{ song.title }}</td>
+        <td>{{ song.artist }}</td>
+        <td style="white-space: nowrap;">
+          <form action="{{ url_for('admin.delete_song', song_id=song.id) }}" method="post" style="display:inline;">
+            <button type="submit" onclick="return confirm('Şarkı silinsin mi?')">Sil</button>
+          </form>
+          <a href="{{ url_for('admin.edit_song', song_id=song.id) }}" style="display:inline;">
+            <button type="button">Düzenle</button>
+          </a>
+        </td>
+      </tr>
+    {% else %}
+      <tr>
+        <td colspan="3">Hiç şarkı yok.</td>
+      </tr>
+    {% endfor %}
+  </table>
+
+  <a href="{{ url_for('auth.logout') }}" class="logout-btn">Çıkış Yap</a>
+</body>
+</html>

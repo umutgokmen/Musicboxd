@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ artist.name }} - Şarkıları</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h2>{{ artist.name }} - Tüm Şarkılar</h2>
+  <ul>
+    {% for song in songs %}
+      <li>
+        <a href="{{ url_for('song.song_detail', song_id=song.id) }}">{{ song.title }}</a>
+        (Albüm: {{ song.album }})
+        {% if song.song_url %}
+          <a href="{{ song.song_url }}" target="_blank" title="YouTube'da Dinle">
+            <img src="{{ url_for('static', filename='youtube.png') }}" alt="YouTube" width="16" style="vertical-align: middle;">
+          </a>
+        {% endif %}
+      </li>
+    {% else %}
+      <li>Bu sanatçıya ait şarkı bulunamadı.</li>
+    {% endfor %}
+  </ul>
+  <a href="{{ url_for('song.song_list') }}">← Şarkı Listesine Dön</a>
+</body>
+</html>
